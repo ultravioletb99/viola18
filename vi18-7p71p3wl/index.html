@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Compleanno di Viola</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&display=swap">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -57,6 +60,51 @@
     display: flex;
     flex-direction: column;
     gap: 14px;
+  }
+
+  .countdown {
+    position: absolute;
+    left: 50%;
+    top: 52.5%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    text-align: center;
+  }
+
+  .countdown-done {
+    font-size: clamp(11px, 3vw, 13px);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #e9dcbe;
+  }
+
+  .countdown-timer {
+    display: flex;
+    justify-content: center;
+    gap: clamp(8px, 3.4vw, 16px);
+  }
+
+  .countdown-seg {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 26px;
+  }
+
+  .countdown-num {
+    font-size: clamp(15px, 4.6vw, 20px);
+    font-weight: 600;
+    color: #e9dcbe;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .countdown-unit {
+    margin-top: 2px;
+    font-size: 6.5px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: rgba(233, 220, 190, 0.55);
   }
 
   .btn {
@@ -113,6 +161,14 @@
 <body>
 
   <div class="poster-wrapper">
+    <div class="countdown" id="countdown">
+      <div class="countdown-timer" id="countdown-timer">
+        <div class="countdown-seg"><span class="countdown-num" id="cd-days">00</span><span class="countdown-unit">giorni</span></div>
+        <div class="countdown-seg"><span class="countdown-num" id="cd-hours">00</span><span class="countdown-unit">ore</span></div>
+        <div class="countdown-seg"><span class="countdown-num" id="cd-mins">00</span><span class="countdown-unit">min</span></div>
+        <div class="countdown-seg"><span class="countdown-num" id="cd-secs">00</span><span class="countdown-unit">sec</span></div>
+      </div>
+    </div>
     <div class="buttons-container">
       <a href="https://drive.google.com/drive/folders/16qm8F8ONf56NS7CQ1LRYYvZtkGfA_auh?usp=sharing" class="btn" target="_blank" rel="noopener noreferrer">Carica le tue foto</a>
       <a href="https://drive.google.com/drive/folders/16qm8F8ONf56NS7CQ1LRYYvZtkGfA_auh?usp=sharing" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">Guarda la Gallery</a>
@@ -120,5 +176,39 @@
     </div>
   </div>
 
+  <script>
+  (function () {
+    "use strict";
+    var target = new Date("2026-09-25T00:00:00+02:00").getTime();
+    var countdown = document.getElementById("countdown");
+    var timer = document.getElementById("countdown-timer");
+    var dEl = document.getElementById("cd-days");
+    var hEl = document.getElementById("cd-hours");
+    var mEl = document.getElementById("cd-mins");
+    var sEl = document.getElementById("cd-secs");
+
+    function pad(n) { return n < 10 ? "0" + n : "" + n; }
+
+    var intervalId = setInterval(tick, 1000);
+    tick();
+
+    function tick() {
+      var diff = target - Date.now();
+      if (diff <= 0) {
+        clearInterval(intervalId);
+        countdown.innerHTML = '<div class="countdown-done">Buon Compleanno Viola!</div>';
+        return;
+      }
+      var days = Math.floor(diff / 86400000);
+      var hours = Math.floor((diff % 86400000) / 3600000);
+      var mins = Math.floor((diff % 3600000) / 60000);
+      var secs = Math.floor((diff % 60000) / 1000);
+      dEl.textContent = pad(days);
+      hEl.textContent = pad(hours);
+      mEl.textContent = pad(mins);
+      sEl.textContent = pad(secs);
+    }
+  })();
+  </script>
 </body>
 </html>
